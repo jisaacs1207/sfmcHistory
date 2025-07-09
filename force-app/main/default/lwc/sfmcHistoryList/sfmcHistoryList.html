@@ -1,10 +1,11 @@
 <template>
-    <lightning-card title="SFMC emailAddressstory" icon-name="custom:custom63">
+    <lightning-card title="SFMC Email History" icon-name="custom:custom63">
         <div class="slds-var-p-horizontal_medium slds-var-p-vertical_small">
             <lightning-button label={loadButtonLabel} onclick={handleLoadEmails} disabled={loading}></lightning-button>
         </div>
         <template if:true={showInstructions}>
-            <div class="slds-var-p-horizontal_medium slds-text-body_regular">Press "Load Emails" to view this contact's email history.</div>
+            <div class="slds-var-p-horizontal_medium slds-text-body_regular">Press "Load Emails" to view this contact's
+                email history.</div>
         </template>
         <template if:true={loading}>
             <div class="slds-var-p-around_medium">
@@ -24,7 +25,8 @@
                         <template for:each={emails} for:item="email" for:index="index">
                             <tr key={email.emailWebUrl}>
                                 <td>
-                                    <a href="javascript:void(0);" class="slds-text-link" data-index={index} onclick={handleSubjectClick}>{email.subjectLine}</a>
+                                    <a href="javascript:void(0);" class="slds-text-link" data-index={index}
+                                        onclick={handleSubjectClick}>{email.subjectLine}</a>
                                 </td>
                                 <td>{email.createdDate}</td>
                             </tr>
@@ -45,10 +47,12 @@
                 <header class="slds-modal__header">
                     <h2 class="slds-modal__title">Email Viewer</h2>
                 </header>
-                <div class="slds-modal__content slds-var-p-around_medium" style="min-height:300px; max-height:70vh; overflow:auto;">
+                <div class="slds-modal__content slds-var-p-around_medium"
+                    style="min-height:300px; max-height:70vh; overflow:auto;">
                     <template if:true={selectedEmail}>
                         <template if:false={iframeError}>
-                            <iframe src={selectedEmail.emailWebUrl} width="100%" height="400px" style="border:none;" onload={handleIframeLoad} onerror={handleIframeError}></iframe>
+                            <iframe src={selectedEmail.emailWebUrl} width="100%" height="400px" style="border:none;"
+                                onload={handleIframeLoad} onerror={handleIframeError}></iframe>
                         </template>
                         <template if:true={iframeError}>
                             <div class="slds-text-color_error slds-var-m-bottom_medium">
