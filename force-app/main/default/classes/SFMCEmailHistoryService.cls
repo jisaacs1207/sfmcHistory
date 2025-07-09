@@ -1,17 +1,17 @@
 public with sharing class SFMCEmailHistoryService {
   public class EmailRecord {
     @AuraEnabled
-    public String SubjectLine;
+    public String subjectLine;
     @AuraEnabled
-    public String EmailWebURL;
+    public String emailWebUrl;
     @AuraEnabled
-    public String CreatedDate;
+    public String createdDate;
     @AuraEnabled
-    public String EmailAddress;
+    public String emailAddress;
     @AuraEnabled
-    public String EventType;
+    public String eventType;
     @AuraEnabled
-    public String ChannelType;
+    public String channelType;
   }
 
   // Entry point for LWC
@@ -28,10 +28,17 @@ public with sharing class SFMCEmailHistoryService {
     // Check if Named Credential exists in the org
     try {
       // NamedCredential.getOrgDefaults() is not available, so we query Metadata
-      List<NamedCredential> creds = [SELECT MasterLabel FROM NamedCredential WHERE DeveloperName = 'SFMC_PI_Named_Credential' WITH SECURITY_ENFORCED LIMIT 1];
+      List<NamedCredential> creds = [
+        SELECT MasterLabel
+        FROM NamedCredential
+        WHERE DeveloperName = 'SFMC_PI_Named_Credential'
+        WITH SECURITY_ENFORCED
+        LIMIT 1
+      ];
       return creds.isEmpty(); // If not found, mock mode
     } catch (Exception e) {
       // If query fails, assume mock mode for safety
+      System.debug('Error checking NamedCredential: ' + e.getMessage());
       return true;
     }
   }
@@ -40,21 +47,18 @@ public with sharing class SFMCEmailHistoryService {
     List<EmailRecord> emails = new List<EmailRecord>();
     for (Integer i = 1; i <= 3; i++) {
       EmailRecord rec = new EmailRecord();
-      rec.SubjectLine = 'Mock Email ' + i;
-      rec.EmailWebURL = 'https://www.example.com/mockemail' + i;
-      rec.CreatedDate = String.valueOf(System.now().addDays(-i));
-      rec.EmailAddress = emailAddress;
-      rec.EventType = 'Sent';
-      rec.ChannelType = 'Email';
+      rec.subjectLine = 'Mock Email ' + i;
+      rec.emailWebUrl = 'https://www.example.com';
+      rec.createdDate = String.valueOf(System.now().addDays(-i));
+      rec.emailAddress = emailAddress;
+      rec.eventType = 'Sent';
+      rec.channelType = 'Email';
       emails.add(rec);
     }
     return emails;
   }
 
   private static List<EmailRecord> fetchFromSFMC(String emailAddress) {
-    // TODO: Implement Named Credential + HTTP callout to SFMC DE
-    // Filter by EmailAddress, EventType = 'Sent', ChannelType = 'Email'
-    // Parse JSON response to EmailRecord list
-    return new List<EmailRecord>();
+    throw new AuraHandledException('fetchFromSFMC is not implemented yet.');
   }
 }

@@ -6,6 +6,7 @@ import { getRecord } from 'lightning/uiRecordApi';
 const CONTACT_EMAIL_FIELD = 'Contact.Email';
 
 export default class SfmcHistoryList extends LightningElement {
+    @track iframeError = false;
     @api recordId;
     @api objectApiName;
     @track emails = [];
@@ -83,8 +84,23 @@ export default class SfmcHistoryList extends LightningElement {
         if (idx !== undefined && this.emails[idx]) {
             this.selectedEmail = this.emails[idx];
             this.showModal = true;
+            this.iframeError = false; // Reset error when opening modal
         } else {
             this.showError('Invalid email selection.');
+        }
+    }
+
+    handleIframeLoad() {
+        this.iframeError = false;
+    }
+
+    handleIframeError() {
+        this.iframeError = true;
+    }
+
+    openEmailUrlInNewTab() {
+        if (this.selectedEmail && this.selectedEmail.EmailWebURL) {
+            window.open(this.selectedEmail.EmailWebURL, '_blank');
         }
     }
 
