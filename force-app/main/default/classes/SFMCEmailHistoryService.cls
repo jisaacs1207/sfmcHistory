@@ -19,9 +19,15 @@ public with sharing class SFMCEmailHistoryService {
     }
 
     private static Boolean isMockMode() {
-        // TODO: Implement logic to check if Named Credential exists, else return true
-        // For now, always return true (mock mode)
-        return true;
+        // Check if Named Credential exists in the org
+        try {
+            // NamedCredential.getOrgDefaults() is not available, so we query Metadata
+            List<Metadata.NamedCredential> creds = [SELECT MasterLabel FROM NamedCredential WHERE DeveloperName = 'SFMC_PI_Named_Credential' LIMIT 1];
+            return creds.isEmpty(); // If not found, mock mode
+        } catch (Exception e) {
+            // If query fails, assume mock mode for safety
+            return true;
+        }
     }
 
     private static List<EmailRecord> getMockEmailHistory(String emailAddress) {
