@@ -17,8 +17,6 @@ export default class SfmcHistoryList extends LightningElement {
 
     emailAddress;
 
-    
-
     get fields() {
         if (this.objectApiName === 'Contact') {
             return [CONTACT_EMAIL_FIELD];
@@ -53,7 +51,7 @@ export default class SfmcHistoryList extends LightningElement {
         }
         getEmailHistory({ emailAddress: this.emailAddress })
             .then(result => {
-                this.emails = (result || []).filter(e => e.EventType === 'Sent' && e.ChannelType === 'Email');
+                this.emails = (result || []).filter(e => e.eventType === 'Sent' && e.channelType === 'Email');
                 if (this.emails.length === 0) {
                     this.showError('No sent emails found for this address.');
                 }
@@ -99,8 +97,8 @@ export default class SfmcHistoryList extends LightningElement {
     }
 
     openEmailUrlInNewTab() {
-        if (this.selectedEmail && this.selectedEmail.EmailWebURL) {
-            window.open(this.selectedEmail.EmailWebURL, '_blank');
+        if (this.selectedEmail && this.selectedEmail.emailWebUrl) {
+            window.open(this.selectedEmail.emailWebUrl, '_blank');
         }
     }
 
